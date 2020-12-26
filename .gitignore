@@ -8,3 +8,7 @@
 
 # Local History for Visual Studio Code
 .history/
+
+# Jupyter Notebooks
+./Jupyter Notebooks/.ipynb_checkpoints
+./Jupyter Notebooks/__pycache__
