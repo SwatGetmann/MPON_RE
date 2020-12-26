@@ -10,5 +10,11 @@
 .history/
 
 # Jupyter Notebooks
-./Jupyter Notebooks/.ipynb_checkpoints
-./Jupyter Notebooks/__pycache__
+Jupyter Notebooks/.ipynb_checkpoints/*
+Jupyter Notebooks/__pycache__/*
+
+# Process Monitor Replays
+Process Monitor Replays/*
+
+# XBOX ADPCM dir
+XBOX ADPCM/*
