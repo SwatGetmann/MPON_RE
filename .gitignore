@@ -18,3 +18,7 @@ Process Monitor Replays/*
 
 # XBOX ADPCM dir
 XBOX ADPCM/*
+
+# Extracted Audio
+Sound/Levels/Extracted/
+Sound/Levels/XboxADPCM.exe
