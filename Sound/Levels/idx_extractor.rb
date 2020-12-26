@@ -64,7 +64,7 @@ def process_audio_chunk(wad_address, wad_rf, wad_fp, index, extracted_dir, prefi
   
   extract_wad_dir = File.join(extracted_dir, prefix)
   FileUtils.mkdir_p(extract_wad_dir)
-  save_path = File.join(extract_wad_dir, "#{prefix}_#{'%03i' % index}.wav")
+  save_path = File.join(extract_wad_dir, "#{prefix}_#{'%04i' % index}.wav")
   save_wav(save_path, i_size, i_channels, i_samplerate, s_stream)
   puts "Extracted to: #{save_path}!"
 end
