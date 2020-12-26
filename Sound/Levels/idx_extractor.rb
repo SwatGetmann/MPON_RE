@@ -1,71 +1,87 @@
 require 'pry'
 require 'fileutils'
 
-extracted_dir = "F:\\22 Code Playground\\Matrix PON Reverse Engineering\\Sound\\Levels\\Extracted"
-FileUtils.mkdir_p(extracted_dir)
-
-ims_dir_path = "g:\\Games\\The Matrix - Path of Neo\\sound\\IMS\\";
-Dir.chdir(ims_dir_path)
-idx_fp_listing = Dir.glob('*').select{|fp| fp =~ /\.IDX$/ }
-puts idx_fp_listing
-
-tfp = idx_fp_listing[0]
-rf = File.open(tfp, 'rb+')
-full_file = rf.read()
-rf.close()
-
-puts full_file.size
-
-total_count = full_file[0..3].unpack('L')
-puts total_count
-split_file = full_file[4..-1].chars.each_slice(4)
-puts split_file.size
-
-def int_to_le_hex(int)
-  return [int].pack('L').chars.map{|b| '%02X' % b.ord }.join(' ')
+def get_idx_listing(game_dir_path)
+  Dir.chdir(game_dir_path)
+  Dir.glob('*').select{|fp| fp =~ /\.IDX$/ }
 end
 
-# split_file.each_with_index do |tmp,i|
-#     unpacked_value = tmp.flatten.join.unpack("L").first
-#     puts "[#{i}|#{int_to_le_hex(i)}] #{unpacked_value}|#{int_to_le_hex(unpacked_value)}" if unpacked_value < 0xffffffff
-# end
+def get_wad_listing(game_dir_path)
+  Dir.chdir(game_dir_path)
+  Dir.glob('*').select{|fp| fp =~ /\.WAD$/ }
+end
 
-lvl_wad_fp_listing = Dir.glob('*').select{|fp| fp =~ /\.WAD$/ }
-puts lvl_wad_fp_listing
+def read_idx_file(idx_file_path)
+  rf = File.open(idx_file_path, 'rb+')
+  contents = rf.read()
+  rf.close()
+  contents
+end
 
-twfp = lvl_wad_fp_listing.first
-rf = File.open(twfp, 'rb+')
+def parse_idx_file(contents)
+  total_count = contents[0..3].unpack('L').first
+  puts "Total audio blocks: #{total_count}" 
+  blocks = contents[4..-1].chars.each_slice(4)
+  puts "Total split 4 byte blocks: #{blocks.size}"
+  {
+    total: total_count,
+    blocks: blocks
+  }
+end
 
-def process_audio_chunk(tmp, i, unpacked_value, rf, extracted_dir)
-  puts "[#{i}|#{int_to_le_hex(i)}] #{unpacked_value}|#{int_to_le_hex(unpacked_value)}" 
-  rf.seek(unpacked_value, IO::SEEK_SET)
+def int_to_le_hex(int)
+  return [int].pack('L').chars.map{|b| '%02X' % b.ord }.join
+end
 
-  s_size = rf.read(4)
-  s_channels = rf.read(2)
-  s_samplerate = rf.read(2)
+def extract_wad_audio_blocks(idx_blocks, wad_fp, extracted_dir, prefix)
+  wad_rf = File.open(wad_fp, 'rb+')
+
+  idx_blocks.each_with_index do |block,j|
+    wad_address = block.flatten.join.unpack("L").first
+    if wad_address < 0xffffffff
+      process_audio_chunk(wad_address, wad_rf, wad_fp, j, extracted_dir, prefix)
+    end  
+  end
+
+  wad_rf.close()
+end
+
+def process_audio_chunk(wad_address, wad_rf, wad_fp, index, extracted_dir, prefix)
+  puts "[#{index} | #{int_to_le_hex(index)}] #{wad_address} | #{int_to_le_hex(wad_address)}" 
+  wad_rf.seek(wad_address, IO::SEEK_SET)
+
+  s_size = wad_rf.read(4)
+  s_channels = wad_rf.read(2)
+  s_samplerate = wad_rf.read(2)
   
   i_size = s_size.unpack('L').first
   i_channels = s_channels.unpack('S').first
   i_samplerate = s_samplerate.unpack('S').first
 
-  s_stream = rf.read(i_size)
+  s_stream = wad_rf.read(i_size)
 
   puts "Size: #{i_size}\nChannels: #{i_channels}\nSamplerate: #{i_samplerate}\n"
+  
+  extract_wad_dir = File.join(extracted_dir, prefix)
+  FileUtils.mkdir_p(extract_wad_dir)
+  save_path = File.join(extract_wad_dir, "#{prefix}_#{'%03i' % index}.wav")
+  save_wav(save_path, i_size, i_channels, i_samplerate, s_stream)
+  puts "Extracted to: #{save_path}!"
+end
 
-  save_path = File.join(extracted_dir, "test_file_#{'%03i' % i}.wav")
-
-  sf = File.open(save_path, 'wb+')
+def save_wav(path, size, channels, samplerate, stream)
+  sf = File.open(path, 'wb+')
   sf.write('RIFF')
-  sf.write([i_size + 36].pack('L'))
+  sf.write([size + 36].pack('L'))
   sf.write('WAVE')
   
   sf.write('fmt ')
   sf.write([20].pack('L')) # chunkSize
   sf.write([105].pack('S')) # wFormatTag
-  sf.write([i_channels].pack('S')) # channels
-  sf.write([i_samplerate].pack('L')) # samplerate
+  sf.write([channels].pack('S')) # channels
+  sf.write([samplerate].pack('L')) # samplerate
   sf.write([54000].pack('L')) # avgBytesPerSec
-  sf.write([i_channels * 36 ].pack('S')) # blockAlign
+  sf.write([channels * 36 ].pack('S')) # blockAlign
   sf.write([4].pack('S')) # bitsPerSample
   sf.write([4194306].pack('L')) # unknown
   
@@ -74,28 +90,52 @@ def process_audio_chunk(tmp, i, unpacked_value, rf, extracted_dir)
   sf.write([209152].pack('L')) # uncompressedSize
 
   sf.write('data')
-  sf.write([i_size].pack('L')) # chunkSize
-  sf.write(s_stream)
+  sf.write([size].pack('L')) # chunkSize
+  sf.write(stream)
 
   sf.close()
-
-  puts "Extracted to: #{save_path}!"
 end
 
-split_file.each_with_index do |tmp,i|
-  # break if i > 4
-  unpacked_value = tmp.flatten.join.unpack("L").first
-  if unpacked_value < 0xffffffff
-    process_audio_chunk(tmp, i, unpacked_value, rf, extracted_dir)
-  end  
+def match_idx_wad(idx_fp_listing, wad_fp_listing)
+  idx_prefixes = idx_fp_listing.map{|s| s[/_(B.*)\.IDX/,1]}
+  wad_prefixes_indexes = wad_fp_listing.map{|s| s[/(B.*)\.WAD/,1].gsub(/_{2,}/,'_')}.each_with_index.to_a
+  result_hash = {}
+  idx_prefixes.each_with_index do |idx_prefix, i|
+    wad_match = wad_prefixes_indexes.find{|wad_prefix,_| wad_prefix == idx_prefix}
+    result_hash[idx_prefix] = {
+      idx_fp: idx_fp_listing[i],
+      wad_fp: wad_fp_listing[wad_match.last]
+    }
+  end
+  result_hash
 end
 
-rf.close()
+extracted_dir = "F:\\22 Code Playground\\Matrix PON Reverse Engineering\\Sound\\Levels\\Extracted"
+FileUtils.mkdir_p(extracted_dir)
 
-Dir.chdir(extracted_dir)
-extracted_listing = Dir.glob('*')
-extracted_listing.each do |efp|
-  cmd = "'XboxADPCM.exe' #{efp}"
-  puts cmd
-  `#{cmd}`
+game_dir_path = "g:\\Games\\The Matrix - Path of Neo\\sound\\IMS\\"
+idx_fp_listing = get_idx_listing(game_dir_path)
+wad_fp_listing = get_wad_listing(game_dir_path)
+
+idx_wad_map = match_idx_wad(idx_fp_listing, wad_fp_listing)
+
+idx_wad_map.each do |prefix, fp_hash|
+  idx_fp = fp_hash[:idx_fp]
+  wad_fp = fp_hash[:wad_fp]
+
+  puts "Reading: #{idx_fp}..."
+  idx_file_contents = read_idx_file(idx_fp)
+  puts "Total IDX file size: #{idx_file_contents.size}"
+  idx_parsed_res = parse_idx_file(idx_file_contents)
+  
+  puts "WAD file: #{wad_fp}"
+  extract_wad_audio_blocks(idx_parsed_res[:blocks], wad_fp, extracted_dir, prefix)
 end
+
+# Dir.chdir(extracted_dir)
+# extracted_listing = Dir.glob('*')
+# extracted_listing.each do |efp|
+#   cmd = "'XboxADPCM.exe' #{efp}"
+#   puts cmd
+#   `#{cmd}`
+# end
