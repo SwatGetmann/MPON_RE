@@ -153,7 +153,6 @@ def extract_ims_metadata(ims_fp)
 
   last_index = 0
   i_total_metadata_blocks.times do |i|
-    # TBD
     a_name = ims_rf.read(0x20).unpack('Z'*0x20)
     a_name_di = a_name.each_with_index.find{|c,i| c == ''}.last
     name = a_name[0..a_name_di].join
