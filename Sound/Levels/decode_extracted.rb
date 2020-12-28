@@ -3,7 +3,15 @@ require 'fileutils'
 
 decoder_tool_path = "F:\\22 Code Playground\\Matrix PON Reverse Engineering\\Sound\\Levels\\XboxADPCM.exe"
 
-extracted_dir_path = "F:\\22 Code Playground\\Matrix PON Reverse Engineering\\Sound\\Levels\\Extracted"
+extracted_dir_path = if ARGV[0]
+	ARGV[0]
+else
+	"F:\\22 Code Playground\\Matrix PON Reverse Engineering\\Sound\\Levels\\Extracted"
+end
+
+puts "USING dir {#{extracted_dir_path}} data"
+puts "External Deocder: {#{decoder_tool_path}}"
+
 Dir.chdir(extracted_dir_path)
 dir_listing = Dir.glob('*')
 
