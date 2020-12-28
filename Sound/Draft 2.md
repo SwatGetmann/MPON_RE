@@ -39,3 +39,9 @@
 * `common\Sound\*.IDX` provide indexation for `common\Sound\*.WAD` files. But the catch is that these `*.WAD`'s DO NOT HAVE BIT STREAM AUDIO DATA, only names of sounds and some other metadata.
 * `NP3_PSTL_*.WAD` are related to RIMs and NIMs.
 * `\sound\NSF_EN_158.WAD` - Streams for Film / Cinematics. They must be related to... files w/ Movies themselves.
+
+* Some strange gap in `NSGLOBAL_400.WAD`, starting off last audio block @ `103954704` (`0x6323910`), Until `0x6800000`
+* `NSGLOBAL_400.WAD` - some weird HEADER info (+ NAMES OF TRACKS!):
+* * @ `0x6660000` - `0x6660260` 
+* * @ `0x6658000` - `0x6658060`
+* * @ `0x6400000` - `0x6654de0`
