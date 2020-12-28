@@ -18,7 +18,7 @@
 * `%GAMEDIR%\sound\NSGLOBAL_400.WAD`
 
 * `%GAMEDIR%\sound\NSD_EN_158.WAD`
-* `%GAMEDIR%\sound\NSF_EN_158.WAD`
+* `%GAMEDIR%\sound\NSF_EN_158.WAD` - Streams for Film / Cinematics
 
 * `%GAMEDIR%\sound\NS_EN_400.WAD`
 * `%GAMEDIR%\sound\NL_EN_400.WAD`
@@ -33,6 +33,9 @@
 *  `NSGLOBAL_400.WAD`, `NSF_EN_158.WAD`, `NSD_EN_158.WAD` files CONTAIN the bit stream data + header: <idx><channels><samplerate>
 *  Streams in `NSGLOBAL_400.WAD`, `NSF_EN_158.WAD`, `NSD_EN_158.WAD` start from 196608 + 8 byte's address. Before that, the indexation + headers are provided.
 *  `NP3_PSTL_*.WAD` files contains header + USHORT indexes. To which streams they are relative is UNKNOWN.
-* `NSF_EN_158.WAD` is PROPERLY ALIGNED - the lenth of audio chunk is valid
-*  `common\Sound\*.IDX` provide indexation for `common\Sound\*.WAD` files. But the catch is that these `*.WAD`'s DO NOT HAVE BIT STREAM AUDIO DATA, only names of sounds and some other metadata.
- 
+* `NSF_EN_158.WAD` is PROPERLY ALIGNED - the lenth of audio chunk is valid.
+* `NSD_EN_158.WAD` is __NOT__ PROPERLY ALIGNED - the lenth of audio chunk is MORE that it's described in header.
+* `NSGLOBAL_400.WAD` is PROPERLY ALIGNED - the lenth of audio chunk is valid.
+* `common\Sound\*.IDX` provide indexation for `common\Sound\*.WAD` files. But the catch is that these `*.WAD`'s DO NOT HAVE BIT STREAM AUDIO DATA, only names of sounds and some other metadata.
+* `NP3_PSTL_*.WAD` are related to RIMs and NIMs.
+* `\sound\NSF_EN_158.WAD` - Streams for Film / Cinematics. They must be related to... files w/ Movies themselves.
