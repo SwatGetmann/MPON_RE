@@ -18,22 +18,39 @@ dir_listing = Dir.glob('*')
 puts dir_listing
 if dir_listing.any?
 	dir_listing.each do |dir_path|
-		puts "Processing dir: #{dir_path}..."
-		wav_fp_listing = Dir.glob(File.join(dir_path)+'/*').select{|s| s=~/\.wav$/i}
-		puts "Total blocks: #{wav_fp_listing.size}"
+		if dir_path =~ /\.wav$/
+			decoded_dir_path = File.join(Dir.pwd, "decoded")
+			puts "Create Dir: {#{decoded_dir_path}}"
+			FileUtils.mkdir_p(decoded_dir_path) unless Dir.exist?(decoded_dir_path)
 
-		decoded_dir_path = File.join(Dir.pwd, dir_path, "decoded")
-		FileUtils.mkdir_p(decoded_dir_path)
+			wav_fp = dir_path
+			puts "Processing file: #{dir_path}..."
 
-		wav_fp_listing.each do |wav_fp|
 			abs_wav_fp = File.join(Dir.pwd, wav_fp)
 			decoded_wav_fp = File.join(decoded_dir_path, File.basename(wav_fp).gsub('.wav','_pcm.wav'))
 			decode_cmd = "'#{decoder_tool_path}' '#{abs_wav_fp}' '#{decoded_wav_fp}'"
 			# puts decode_cmd
 			%x{ "#{decoder_tool_path}" "#{abs_wav_fp}" "#{decoded_wav_fp}"}
-		end
 
-		puts "Dir #{dir_path} processed!"
+		elsif Dir.exist?(dir_path)
+			puts "Processing dir: #{dir_path}..."
+			wav_fp_listing = Dir.glob(File.join(dir_path)+'/*').select{|s| s=~/\.wav$/i}
+			puts "Total blocks: #{wav_fp_listing.size}"
+
+			decoded_dir_path = File.join(Dir.pwd, dir_path, "decoded")
+			puts "Create Dir: {#{decoded_dir_path}}"
+			FileUtils.mkdir_p(decoded_dir_path)
+
+			wav_fp_listing.each do |wav_fp|
+				abs_wav_fp = File.join(Dir.pwd, wav_fp)
+				decoded_wav_fp = File.join(decoded_dir_path, File.basename(wav_fp).gsub('.wav','_pcm.wav'))
+				decode_cmd = "'#{decoder_tool_path}' '#{abs_wav_fp}' '#{decoded_wav_fp}'"
+				# puts decode_cmd
+				%x{ "#{decoder_tool_path}" "#{abs_wav_fp}" "#{decoded_wav_fp}"}
+			end
+
+			puts "Dir #{dir_path} processed!"
+		end
 	end
 end
 
