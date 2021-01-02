@@ -84,14 +84,14 @@ wad_rf.seek(0x38000, IO::SEEK_SET) # skip dumb zeros
 while global_idx > 0
   if wad_rf.pos % 16 != 0
     new_addr = (wad_rf.pos / 16.0).ceil * 16
-    puts "Jump to: #{new_addr}"
-    wad_rf.seek()
+    # puts "Jump to: #{new_addr}"
+    wad_rf.seek(new_addr, IO::SEEK_SET)
   end
   b_sample, _channels, _samplerate = wad_rf.read(8).unpack('LSS')
   # binding.pry
   next if b_sample == 0
   # binding.pry if wad_rf.pos >= 0xCC00000
-  binding.pry if global_idx == 6074 && wad_rf.pos == 388424
+  # binding.pry if global_idx == 6074 && wad_rf.pos == 388424
   if headers_array.select{|x| !x[:found] && (x[:size] == b_sample && x[:channels] == _channels && x[:samplerate] == _samplerate) }.any?
     header = headers_array.select{|x| !x[:found]}.find{|h| h[:size] == b_sample}
 
@@ -106,7 +106,7 @@ while global_idx > 0
     stream = wad_rf.read(header[:size])
     header[:found] = true
 
-    binding.pry if global_idx % 10 == 0
+    # binding.pry if global_idx % 10 == 0
 
     save_path = File.join(extract_path, "NSD_EN_158__#{'%04i' % header[:global_idx]}_#{header[:header_idx]}.wav")
     save_wav(save_path, header[:size], header[:channels], header[:samplerate], stream)
