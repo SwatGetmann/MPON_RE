@@ -23,7 +23,7 @@
 * `%GAMEDIR%\sound\NS_EN_400.WAD` - addresses to audio blocks in `NSGLOBAL_400.WAD`
 * `%GAMEDIR%\sound\NL_EN_400.WAD` - addresses to AFTER-AUDIO blocks in `NSD_EN_158.WAD`
 
-* `%GAMEDIR%\sound\NP3_PSTL_*.WAD` - relative to RIM/NIMs (?what is it)
+* `%GAMEDIR%\sound\NP3_PSTL_*.WAD` - relative to RIM/NIMs (?what is it) - have ushort pointers to `NPGLOBAL_400.WAD` headers
 
 # Knowledge
 
