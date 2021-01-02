@@ -1,6 +1,8 @@
 require 'pry'
 require 'fileutils'
 
+# ruby 'F:\22 Code Playground\Matrix PON Reverse Engineering\Sound\Levels\decode_extracted.rb' 'F:\22 Code Playground\Matrix PON Reverse Engineering\Sound\Global\ExtractNSD'
+
 decoder_tool_path = "F:\\22 Code Playground\\Matrix PON Reverse Engineering\\Sound\\Levels\\XboxADPCM.exe"
 
 extracted_dir_path = if ARGV[0]
