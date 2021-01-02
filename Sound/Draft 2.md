@@ -20,8 +20,8 @@
 * `%GAMEDIR%\sound\NSD_EN_158.WAD` - Dialogues
 * `%GAMEDIR%\sound\NSF_EN_158.WAD` - Streams for Film / Cinematics
 
-* `%GAMEDIR%\sound\NS_EN_400.WAD`
-* `%GAMEDIR%\sound\NL_EN_400.WAD`
+* `%GAMEDIR%\sound\NS_EN_400.WAD` - addresses to audio blocks in `NSGLOBAL_400.WAD`
+* `%GAMEDIR%\sound\NL_EN_400.WAD` - addresses to AFTER-AUDIO blocks in `NSD_EN_158.WAD`
 
 * `%GAMEDIR%\sound\NP3_PSTL_*.WAD` - relative to RIM/NIMs (?what is it)
 
@@ -36,7 +36,8 @@
 * `NSF_EN_158.WAD` is PROPERLY ALIGNED - the lenth of audio chunk is valid.
 * `NSD_EN_158.WAD` is __NOT__ PROPERLY ALIGNED - the lenth of audio chunk is MORE that it's described in header.
 * `NSGLOBAL_400.WAD` is PROPERLY ALIGNED - the lenth of audio chunk is valid.
-* `common\Sound\*.IDX` provide indexation for `common\Sound\*.WAD` files. But the catch is that these `*.WAD`'s DO NOT HAVE BIT STREAM AUDIO DATA, only names of sounds and some other metadata.
+* `common\Sound\*.IDX` provide indexation for `common\Sound\*.WAD` files. \
+But the catch is that these `*.WAD`'s DO NOT HAVE BIT STREAM AUDIO DATA, only names of sounds and some other metadata.
 * `NP3_PSTL_*.WAD` are related to RIMs and NIMs.
 * `\sound\NSF_EN_158.WAD` - Streams for Film / Cinematics. They must be related to... files w/ Movies themselves.
 
