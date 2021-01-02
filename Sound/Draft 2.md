@@ -6,24 +6,24 @@
 # Files of interest:
 
 <!-- * `%GAMEDIR%\sound\IMS` -->
-* `%GAMEDIR%\common\Sound\NQGLOBAL_400.WAD`
-* `%GAMEDIR%\common\Sound\NQGLOBAL_400.IDX`
+* `%GAMEDIR%\common\Sound\NQGLOBAL_400.WAD` - header + pointers to `NGGLOBAL_400.WAD`
+* `%GAMEDIR%\common\Sound\NQGLOBAL_400.IDX` - idx (header block addresses) for `NQGLOBAL_400.WAD`
 
-* `%GAMEDIR%\common\Sound\NPGLOBAL_400.WAD`
-* `%GAMEDIR%\common\Sound\NPGLOBAL_400.IDX`
+* `%GAMEDIR%\common\Sound\NPGLOBAL_400.WAD` 
+* `%GAMEDIR%\common\Sound\NPGLOBAL_400.IDX` - idx (header block addresses) for `NSGLOBAL_400.WAD`
 
-* `%GAMEDIR%\common\Sound\NGGLOBAL_400.WAD`
-* `%GAMEDIR%\common\Sound\NGGLOBAL_400.IDX`
+* `%GAMEDIR%\common\Sound\NGGLOBAL_400.WAD` - header + pointers for audio from `NSGLOBAL_400.WAD`
+* `%GAMEDIR%\common\Sound\NGGLOBAL_400.IDX` - idx (header block addresses) for `NSGLOBAL_400.WAD`
 
 * `%GAMEDIR%\sound\NSGLOBAL_400.WAD` - In-Game Cinematics / Music / SFX + Headers
 
-* `%GAMEDIR%\sound\NSD_EN_158.WAD`
+* `%GAMEDIR%\sound\NSD_EN_158.WAD` - Dialogues
 * `%GAMEDIR%\sound\NSF_EN_158.WAD` - Streams for Film / Cinematics
 
 * `%GAMEDIR%\sound\NS_EN_400.WAD`
 * `%GAMEDIR%\sound\NL_EN_400.WAD`
 
-* `%GAMEDIR%\sound\NP3_PSTL_*.WAD` - relative to RIM/NIMs
+* `%GAMEDIR%\sound\NP3_PSTL_*.WAD` - relative to RIM/NIMs (?what is it)
 
 # Knowledge
 
@@ -75,3 +75,11 @@ That is yet to be checked.
 * `NP3_PSTL` files refer to Gap-Header in `NSGLOBAL_400.WAD`
 * Good examples: `Katana`, `MX_B2_` (`I_Say.WAD`). Gap-Headers in NSGlobal have DIFFERENT values in the first block - or at least the names are different ... \
 And these indexes are either the previous or following to the ones from `NP3_PSTL`...
+
+* `NPGLOBAL_400.WAD` has the same header, as Gap Headers in `NSGLOBAL_400.WAD`
+* Headers in `NPGLOBAL_400.WAD` are linked to audio. \
+Listing consistas of Header Blocks, that consist of SubBlocks. \
+The ORDER of audio placement in the `NSGLOBAL_400.wad` corresponds w/ the order of sub_block pointers. \
+The same audio CAN BE REUSED in differnt BLOCKS.
+* `NQGLOBAL_400.WAD` has HEADERS, that point to blocks in `NPGLOBAL_400.WAD`.
+* `NGGLOBAL_400.WAD` has headers, but they are unknown. They have FLOAT numbers, and the counter of elements, that is linked to somewhat - but that is not understood yet.
