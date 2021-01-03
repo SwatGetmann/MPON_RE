@@ -1,5 +1,6 @@
 require 'pry'
 require 'fileutils'
+require 'csv'
 
 def save_wav(path, size, channels, samplerate, stream)
   sf = File.open(path, 'wb+')
@@ -32,13 +33,18 @@ def handle_broken_block()
   # TBD
 end
 
-# ruby 'F:\22 Code Playground\Matrix PON Reverse Engineering\Sound\Global\nsGlobal_extractor.rb' 'g:\Games\The Matrix - Path of Neo' 'f:\22 Code Playground\Matrix PON Reverse Engineering\Sound\Global\ExtractNSGlobal'
+# ruby 'F:\22 Code Playground\Matrix PON Reverse Engineering\Sound\Global\nsGlobal_extractor.rb' 'g:\Games\The Matrix - Path of Neo' 'f:\22 Code Playground\Matrix PON Reverse Engineering\Sound\Global\ExtractNSGlobal_TESTNames' 'F:\22 Code Playground\Matrix PON Reverse Engineering\Sound\Global\TEST_NSGlobal400\result_table_nodup.csv'
 
 game_dir_path = ARGV[0]
 extract_path = ARGV[1]
+csv_index = ARGV[2]
 
 puts "Game Dir Path: {#{game_dir_path}}"
 puts "Extraction Path : {#{extract_path}}"
+puts "CSV Index Path : {#{csv_index}}"
+
+csv_data = CSV.read(csv_index)
+adb_data = csv_data[1..-1].map{|a| {:adb_index => a[0].to_i, :header_name => a[1], :header_idx => a[2].to_i, :header_pos => a[3].to_i}}
 
 FileUtils.mkdir_p(extract_path)
 
@@ -79,18 +85,19 @@ while wad_rf.pos - 8 < offset
   end
 end
 
+total = global_idx
+
 puts "="*100
 
-while global_idx > 0
+while global_idx > 0 && (total - global_idx) < 300
   b_sample = wad_rf.read(4).unpack('L').first
   next if b_sample == 0
   # binding.pry if wad_rf.pos >= 0xCC00000
-  # binding.pry if global_idx == 1
   if headers_array.select{|x| !x[:found]}.map{|h| h[:size]}.include?(b_sample)
     stream_addr = wad_rf.pos-4
     header = headers_array.select{|x| !x[:found]}.find{|h| h[:size] == b_sample}
     _channels, _samplerate = wad_rf.read(4).unpack('SS')
-    puts "STREAM: [#{header[:header_idx]} | #{header[:global_idx]}] : #{stream_addr} , {#{header[:size]}, #{header[:channels]}, #{header[:samplerate]}}. Left to find: #{global_idx - 1}"
+    puts "STREAM: [#{header[:header_idx]} | #{header[:global_idx]}] : #{stream_addr} , {#{header[:size]}, #{header[:channels]}, #{header[:samplerate]}}. IDX: #{total - global_idx}. Left to find: #{global_idx - 1}"
 
     # CHANGE to HANLDE BROKEN BLOCK
 
@@ -188,7 +195,11 @@ while global_idx > 0
 
     stream = wad_rf.read(header[:size])
     header[:found] = true
-    save_path = File.join(extract_path, "NSGLOBAL_400__#{'%04i' % header[:global_idx]}_#{header[:header_idx]}.wav")
+
+    binding.pry if (total - global_idx) == 0
+
+
+    save_path = File.join(extract_path, "NSGLOBAL_400__#{'%04i' % (total - global_idx)}__#{'%04i' % header[:global_idx]}_#{header[:header_idx]}__#{adb_data[total - global_idx][:header_name]}_#{adb_data[total - global_idx][:adb_index]}.wav")
     save_wav(save_path, header[:size], header[:channels], header[:samplerate], stream)
     puts "Stream read & saved. Position: #{wad_rf.pos}"
 
