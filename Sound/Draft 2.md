@@ -9,11 +9,11 @@
 * `%GAMEDIR%\common\Sound\NQGLOBAL_400.WAD` - header + pointers to `NGGLOBAL_400.WAD`
 * `%GAMEDIR%\common\Sound\NQGLOBAL_400.IDX` - idx (header block addresses) for `NQGLOBAL_400.WAD`
 
-* `%GAMEDIR%\common\Sound\NPGLOBAL_400.WAD` 
-* `%GAMEDIR%\common\Sound\NPGLOBAL_400.IDX` - idx (header block addresses) for `NSGLOBAL_400.WAD`
+* `%GAMEDIR%\common\Sound\NPGLOBAL_400.WAD` - header + pointers for audio from `NSGLOBAL_400.WAD`
+* `%GAMEDIR%\common\Sound\NPGLOBAL_400.IDX` - UINT pointers to `NPGLOBAL_400.WAD`
 
-* `%GAMEDIR%\common\Sound\NGGLOBAL_400.WAD` - header + pointers for audio from `NSGLOBAL_400.WAD`
-* `%GAMEDIR%\common\Sound\NGGLOBAL_400.IDX` - idx (header block addresses) for `NSGLOBAL_400.WAD`
+* `%GAMEDIR%\common\Sound\NGGLOBAL_400.WAD` 
+* `%GAMEDIR%\common\Sound\NGGLOBAL_400.IDX` 
 
 * `%GAMEDIR%\sound\NSGLOBAL_400.WAD` - In-Game Cinematics / Music / SFX + Headers
 
