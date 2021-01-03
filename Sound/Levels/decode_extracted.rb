@@ -29,7 +29,8 @@ if dir_listing.any?
 			puts "Processing file: #{dir_path}..."
 
 			abs_wav_fp = File.join(Dir.pwd, wav_fp)
-			decoded_wav_fp = File.join(decoded_dir_path, File.basename(wav_fp).gsub('.wav','_pcm.wav'))
+			# decoded_wav_fp = File.join(decoded_dir_path, File.basename(wav_fp).gsub('.wav','_pcm.wav'))
+			decoded_wav_fp = File.join(decoded_dir_path, File.basename(wav_fp))
 			decode_cmd = "'#{decoder_tool_path}' '#{abs_wav_fp}' '#{decoded_wav_fp}'"
 			# puts decode_cmd
 			%x{ "#{decoder_tool_path}" "#{abs_wav_fp}" "#{decoded_wav_fp}"}
