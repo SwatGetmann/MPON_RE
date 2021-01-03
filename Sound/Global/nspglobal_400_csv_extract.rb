@@ -27,7 +27,7 @@ def read_wad_block(wad_rf)
   wad_info
 end
 
-# ruby 'F:\22 Code Playground\Matrix PON Reverse Engineering\Sound\Global\test_nspglobal_400.rb' 'g:\Games\The Matrix - Path of Neo' 'f:\22 Code Playground\Matrix PON Reverse Engineering\Sound\Global\TEST_NSGlobal400'
+# ruby 'F:\22 Code Playground\Matrix PON Reverse Engineering\Sound\Global\nspglobal_400_csv_extract.rb' 'g:\Games\The Matrix - Path of Neo' 'f:\22 Code Playground\Matrix PON Reverse Engineering\Sound\Global\TEST_NSGlobal400'
 
 game_dir_path = ARGV[0]
 extract_path = ARGV[1]
