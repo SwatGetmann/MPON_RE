@@ -107,7 +107,6 @@ module MPONExtract
     puts "="*100
   end
 
-
   def self.extract_streams_wad_fp(ns_en_offsets, wad_fp, adb_data, extract_path, msg)
     wad_basename = File.basename(wad_fp)
     wad_name = wad_basename.gsub(/\.WAD$/, '')
@@ -137,88 +136,6 @@ module MPONExtract
     wad_rf.close()
     puts "FINISHED EXTRACTING [NSF_EN_158.WAD] !"
   end
-
-  def self.extract_streams_nsglobal_400(ns_en_offsets, wad_fp, adb_data, extract_path)
-    puts "START EXTRACTING [NSGLOBAL_400.WAD] - SFX + Additional Music ..."
-    wad_rf = File.open(wad_fp, 'rb+')
-    nsglobal_headers = ns_en_offsets.select{|r| r.keys.include?(:source) && r[:source] == 'NSGLOBAL_400.WAD'}
-    puts "TOTAL ADB: #{nsglobal_headers.size}"
-    nsglobal_headers.each do |nsg_header|
-      puts "[#{nsg_header[:source]}] EXTRACTING: #{nsg_header[:id]} @ #{nsg_header[:offset]} {#{nsg_header[:size]} , #{nsg_header[:channels]} , #{nsg_header[:samplerate]}}"
-      adb_block = adb_data.find{|r| r[:adb_index] == nsg_header[:id]}
-      if adb_block
-        puts "NAME: #{adb_block[:header_name]}"
-
-        wad_rf.seek(nsg_header[:offset]+8, IO::SEEK_SET)
-        stream = wad_rf.read(nsg_header[:size])
-        nsg_header[:found] = true
-
-        save_path = File.join(extract_path, "NSGLOBAL_400__#{'%05i' % nsg_header[:id]}__#{adb_block[:header_name]}.wav")
-        save_wav(save_path, nsg_header[:size], nsg_header[:channels], nsg_header[:samplerate], stream)
-        puts "Stream read & saved. Position: #{wad_rf.pos}"
-      else
-        puts "ADB BLOCK NOT FOUND!"
-        binding.pry
-      end
-    end
-    wad_rf.close()
-    puts "FINISHED EXTRACTING [NSGLOBAL_400.WAD] !"
-  end
-
-  def self.extract_streams_nsf_en_158(ns_en_offsets, wad_fp, adb_data, extract_path)
-    puts "START EXTRACTING [NSF_EN_158.WAD] - Video Mixes ..."
-    wad_rf = File.open(wad_fp, 'rb+')
-    nsglobal_headers = ns_en_offsets.select{|r| r.keys.include?(:source) && r[:source] == 'NSF_EN_158.WAD'}
-    puts "TOTAL ADB: #{nsglobal_headers.size}"
-    nsglobal_headers.each do |nsg_header|
-      puts "[#{nsg_header[:source]}] EXTRACTING: #{nsg_header[:id]} @ #{nsg_header[:offset]} {#{nsg_header[:size]} , #{nsg_header[:channels]} , #{nsg_header[:samplerate]}}"
-      adb_block = adb_data.find{|r| r[:adb_index] == nsg_header[:id]}
-      if adb_block
-        puts "NAME: #{adb_block[:header_name]}"
-
-        wad_rf.seek(nsg_header[:offset]+8, IO::SEEK_SET)
-        stream = wad_rf.read(nsg_header[:size])
-        nsg_header[:found] = true
-
-        save_path = File.join(extract_path, "NSF_EN_158__#{'%05i' % nsg_header[:id]}__#{adb_block[:header_name]}.wav")
-        save_wav(save_path, nsg_header[:size], nsg_header[:channels], nsg_header[:samplerate], stream)
-        puts "Stream read & saved. Position: #{wad_rf.pos}"
-      else
-        puts "ADB BLOCK NOT FOUND!"
-        binding.pry
-      end
-    end
-    wad_rf.close()
-    puts "FINISHED EXTRACTING [NSF_EN_158.WAD] !"
-  end
-
-  def self.extract_streams_nsd_en_158(ns_en_offsets, wad_fp, adb_data, extract_path)
-    puts "START EXTRACTING [NSD_EN_158.WAD] - Dialogues + Voices ..."
-    wad_rf = File.open(wad_fp, 'rb+')
-    nsglobal_headers = ns_en_offsets.select{|r| r.keys.include?(:source) && r[:source] == 'NSD_EN_158.WAD'}
-    puts "TOTAL ADB: #{nsglobal_headers.size}"
-    nsglobal_headers.each do |nsg_header|
-      puts "[#{nsg_header[:source]}] EXTRACTING: #{nsg_header[:id]} @ #{nsg_header[:offset]} {#{nsg_header[:size]} , #{nsg_header[:channels]} , #{nsg_header[:samplerate]}}"
-      adb_block = adb_data.find{|r| r[:adb_index] == nsg_header[:id]}
-      if adb_block
-        puts "NAME: #{adb_block[:header_name]}"
-
-        wad_rf.seek(nsg_header[:offset]+8, IO::SEEK_SET)
-        stream = wad_rf.read(nsg_header[:size])
-        nsg_header[:found] = true
-
-        save_path = File.join(extract_path, "NSD_EN_158__#{'%05i' % nsg_header[:id]}__#{adb_block[:header_name]}.wav")
-        save_wav(save_path, nsg_header[:size], nsg_header[:channels], nsg_header[:samplerate], stream)
-        puts "Stream read & saved. Position: #{wad_rf.pos}"
-      else
-        puts "ADB BLOCK NOT FOUND!"
-        binding.pry
-      end
-    end
-    wad_rf.close()
-    puts "FINISHED EXTRACTING [NSD_EN_158.WAD] !"
-  end
-
 end
 
 # ruby 'F:\22 Code Playground\Matrix PON Reverse Engineering\Sound\Global\nsGlobal_extractor_NS_EN_400_based.rb' 'g:\Games\The Matrix - Path of Neo' 'f:\22 Code Playground\Matrix PON Reverse Engineering\Sound\Global\ExtractNSGlobal_Namings' 'F:\22 Code Playground\Matrix PON Reverse Engineering\Sound\Global\NPGlobal400_CSV\result_table_full.csv'
