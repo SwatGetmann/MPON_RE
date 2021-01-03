@@ -20,14 +20,14 @@ def read_wad_block(wad_rf)
   wad_info[:size] = size
   wad_info[:audio_blocks] = []
   size.times do |i|
-    audio_block_index, _ = wad_rf.read(4+9*2+4+2*3).unpack('L'+'S'*9+'L'+'S'*3)
+    audio_block_index, _ = wad_rf.read(4+9*2+4+2*3).unpack('S'+'S'*10+'L'+'S'*3)
     puts "WAD.pos : #{wad_rf.pos} | #{audio_block_index}"
     wad_info[:audio_blocks] << audio_block_index
   end
   wad_info
 end
 
-# ruby 'F:\22 Code Playground\Matrix PON Reverse Engineering\Sound\Global\nspglobal_400_csv_extract.rb' 'g:\Games\The Matrix - Path of Neo' 'f:\22 Code Playground\Matrix PON Reverse Engineering\Sound\Global\TEST_NSGlobal400'
+# ruby 'F:\22 Code Playground\Matrix PON Reverse Engineering\Sound\Global\nspglobal_400_csv_extract.rb' 'g:\Games\The Matrix - Path of Neo' 'f:\22 Code Playground\Matrix PON Reverse Engineering\Sound\Global\NPGlobal400_CSV'
 
 game_dir_path = ARGV[0]
 extract_path = ARGV[1]
