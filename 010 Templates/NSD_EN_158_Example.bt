@@ -1,0 +1,66 @@
+//------------------------------------------------
+//--- 010 Editor v11.0.1 Binary Template
+//
+//      File: 
+//   Authors: 
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+struct HEADER {
+    UINT id <bgcolor=0x00AA55>;
+    UINT size <bgcolor=0x00B0B0>;
+    USHORT channels <fgcolor=0x00B0B0>;
+    USHORT samplerate <fgcolor=0x00B0B0>;
+};
+
+struct FILLER {
+    BYTE filler[0x4] <fgcolor=cGray>;
+};
+
+struct MEDIA {
+    INT size <bgcolor=0x00B0B0>;
+    USHORT channels <fgcolor=0x00B0B0>;
+    USHORT samplerate <fgcolor=0x00B0B0>;
+    BYTE stream[size] <fgcolor=cGray>; 
+};
+
+FSeek(0x4);
+UINT OFFSET <bgcolor=0x5050A0>;
+
+local uint sample = 0x0;
+
+while (FTell() < OFFSET + 0x8)
+{
+    sample = ReadUInt();
+    if (sample < 4294967295) 
+    {
+        HEADER header1;
+    }
+    else {
+        FILLER filler1;
+    }
+}
+
+FSeek(0x38000);
+MEDIA media1;
+
+uint unkA <fgcolor=0xa0F0a0>;
+uint unkB <fgcolor=0x50F050>;
+uint unkC <fgcolor=0xa0A0a0>; 
+ushort unkD <fgcolor=0x80A080>; 
+ushort u_size1 <fgcolor=0x50F050>;
+byte wtfA[u_size1 << 3] <bgcolor=0xa0F0a0>;
+
+MEDIA media2;
+
+uint unkA <fgcolor=0xa0F0a0>;
+uint unkB <fgcolor=0x50F050>;
+uint unkC <fgcolor=0xa0A0a0>; 
+ushort unkD <fgcolor=0x80A080>; 
+ushort u_size2 <fgcolor=0x50F050>;
+byte wtfB[u_size2 << 3] <bgcolor=0xa0F0a0>;

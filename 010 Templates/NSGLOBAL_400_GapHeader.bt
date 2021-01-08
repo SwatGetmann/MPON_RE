@@ -1,0 +1,60 @@
+//------------------------------------------------
+//--- 010 Editor v11.0.1 Binary Template
+//
+//      File: NSGLOBAL_400.WAD - GapHeader Tembplate
+//   Authors: SwatGetmann
+//   Version: v0.0.1
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+struct HEADER_BLOCK {
+    UINT index <bgcolor=0x00AA55>;
+    USHORT unk1[6] <fgcolor=0x00AA55>;
+    USHORT filler1[3] <bgcolor=cBlack>;
+    UINT unk2 <bgcolor=0x008F00>;
+    USHORT unk3[3] <fgcolor=0x00e8e8>;
+};
+
+struct HEADER {
+    USHORT current_index <bgcolor=0xAA5500>;
+    USHORT flag1 <fgcolor=0xAAA0A0>;
+    
+    CHAR name[] <bgcolor=0x10B8B8>;
+    BYTE filler1[0x20 - Strlen(name)-1] <bgcolor=cBlack>;
+    
+    UBYTE size_of_blocks <bgcolor=0x00AA55>;
+    UBYTE unk1 <fgcolor=0x8888F0>;
+    UBYTE unk2 <fgcolor=0xBAF8F0>;
+    BYTE filler2[25] <bgcolor=cBlack>;
+
+    HEADER_BLOCK blocks[size_of_blocks];
+    
+    if (size_of_blocks % 2 == 1) {
+        BYTE filler3[0x20] <bgcolor=cBlack>;    
+    };
+};
+
+FSeek(0x6400000);
+while ( FTell() < 0x6654de0 )
+{
+    HEADER header_b1_1 <optimize=false>;
+}
+FSeek(0x6658000);
+while ( FTell() < 0x6658060 )
+{
+    HEADER header_b1_2 <optimize=false>;
+}
+FSeek(0x6660000);
+while ( FTell() < 0x6660260 )
+{
+    HEADER header_b1_3 <optimize=false>;
+}
+
+
+
+
+// local int total_count = 100; // from idx file
