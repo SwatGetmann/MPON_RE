@@ -1,0 +1,43 @@
+//------------------------------------------------
+//--- 010 Editor v11.0.1 Binary Template
+//
+//      File: NSGLOBAL_400.WAD
+//   Authors: 
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+struct BLANK {
+    SHORT   tmpv1 <bgcolor=cBlack>, 
+            tmpv2  <bgcolor=cBlack>;
+};
+
+struct OFFSET {
+    UINT value <bgcolor=0x5080F0>;
+};
+
+struct PSEUDO_DATA_BLOCK {
+    UINT index <bgcolor=0x50D0D0>;
+    UINT size <bgcolor=0x80A000>;
+    USHORT channels <bgcolor=0x80C688>;
+    USHORT sample_rate <bgcolor=0x8888c6>; // ??? is it really so?
+};
+
+BLANK b1;
+OFFSET o1;
+local uint i = 8;
+PSEUDO_DATA_BLOCK pdb[(o1.value - i)/0xC+1];
+BLANK b2[(0x38000 - o1.value - i)/4];
+
+typedef struct {
+    UINT size <bgcolor=cRed>;
+    USHORT channels;
+    USHORT samplerate <bgcolor=cPurple>;
+    SHORT data[size/2];
+} AUDIO_DATA <bgcolor=0x5F>;
+
+AUDIO_DATA ad[16000] <optimize=false>;

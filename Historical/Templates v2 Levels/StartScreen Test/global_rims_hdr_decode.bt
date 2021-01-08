@@ -1,0 +1,171 @@
+//------------------------------------------------
+//--- 010 Editor v11.0.1 Binary Template
+//
+//      File: GlobalRims.hdr_5
+//   Authors: SwatGetmann
+//   Version: v1.0.0
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+local int nameBlockLength = 0x20;
+
+typedef struct (uint size) {
+    CHAR name[]                         <bgcolor=0xA000F0>;
+    BYTE space[size-Strlen(name) -1]    <bgcolor=cBlack>;
+} TEXT_BLOCK;
+
+typedef struct {
+    USHORT  v1 <bgcolor=0x505050>, 
+            v2 <bgcolor=0x507070>;
+} FAST_USHORT_BLOCK;
+
+typedef struct (uint size) {
+    CHAR name[nameBlockLength] <bgcolor=0xA000F0>;
+    local uint bytes_left = size - nameBlockLength;
+    local uint uBlockDivisor = 4;
+    FAST_USHORT_BLOCK uBlock[bytes_left/uBlockDivisor] <optimize=false>;
+} PRE_CLUSTER_BLOCK;
+
+struct UNDECODED_CLUSTER_BYTES {
+    USHORT av0[4];
+    UINT zero_delim1;
+    
+    USHORT av1[4];
+    
+    USHORT v10;
+    USHORT pv10;
+    USHORT v11;
+    USHORT pv11;
+    UINT zero_delim2;
+
+    USHORT v20;
+    USHORT v21;
+    UINT zero_delim3;
+
+    USHORT v30;
+    USHORT v31;
+    UINT zero_delim4, zero_delim5;
+
+    USHORT v40, v41;
+    UINT zero_delim6;
+};
+
+typedef struct {
+    UINT connector_id <bgcolor=0x0f0fFF>;
+    
+    UBYTE uv1 <bgcolor=0x8F>; // from undecoded value
+    USHORT index <bgcolor=0xc9>;
+    UBYTE uv2 <bgcolor=0x8F>;
+
+    // UINT uv_delim <bgcolor=0xA01010>;
+    UBYTE uv3 <bgcolor=0x8F>; 
+    USHORT to_add_index <bgcolor=0xcf>;
+    UBYTE uv5 <bgcolor=0x8F>;
+    
+} MLB_HEADER_LINK ;
+
+
+typedef struct {
+    TEXT_BLOCK name(0x20);
+
+    UINT i10; // ui10 in old scripts
+    UINT sectionsSize <bgcolor=0x00E0A0>; // sections_count
+    USHORT mlb_headers_size <bgcolor=0x0505F0>; // 15 in StartScreen, 1 in Global Rims
+    USHORT mlb_exploded_size <bgcolor=0x15A0A0>; // 15 in StartScreen, 1 in Global Rims
+    USHORT post_mlb_size <bgcolor=0x10a0F0>; // was 41 in StartScreen, 1 in Global Rims
+    USHORT block1_size <bgcolor=0x8EE8E0>; // ush12; // Start screen: 1. Global Rims: 0
+    USHORT block2_size <bgcolor=0xEE88E0>; // ush_size2; // both 0
+    USHORT block3_size <bgcolor=0x0505F0>; // ush13; // 1 -> 0
+    USHORT block4_size <bgcolor=0x15F515>;  // ush14; // 1 -> 0
+    USHORT listing_size <bgcolor=0x10a0F0>; // was 63 -> 0
+    
+    UNDECODED_CLUSTER_BYTES undecoded_pretext_struct <bgcolor=0xA0A0A0>;
+} CLUSTER_HEADER;
+
+typedef struct (uint size) {
+    UINT uints[size] <bgcolor=cBlack, fgcolor=0x10a0F0>; 
+} UNKNOWN_UINT_SPACING;
+
+UINT    section_block_index <bgcolor=cRed>,
+        region_count        <bgcolor=cBlack>; // static?
+
+CLUSTER_HEADER clusters[section_block_index] <optimize=false>;
+
+typedef struct (
+    uint sectionSize, 
+    uint block1_size, 
+    uint block2_size, 
+    uint block3_size,
+    uint block4_size,
+    uint listing_size
+) {
+    TEXT_BLOCK sectionNameBlock(0x20)[sectionSize] <optimize=false>;
+    TEXT_BLOCK block1(0x40)[block1_size]  <optimize=false, fgcolor=0x8EE8E0>;
+    TEXT_BLOCK block2(0x40)[block2_size]  <optimize=false, fgcolor=0xEE88E0>;
+    TEXT_BLOCK block3(0x40)[block3_size]  <optimize=false, fgcolor=0xa5a5f5>;
+    TEXT_BLOCK block4(0x20)[block4_size]  <optimize=false, fgcolor=0xa5E5a5>;
+    TEXT_BLOCK listingBlock(0x40)[listing_size]   <optimize=false, fgcolor=0x10E0F0>;
+} CLUSTER_ASCII_BLOCK;
+
+typedef struct (
+    uint mlb_headers_size,
+    uint mlb_exploded_size,
+    uint post_mlb_size
+) {
+    MLB_HEADER_LINK mlb_headers[mlb_headers_size];
+    MLB_HEADER_LINK mlb_exploded[mlb_exploded_size];
+    UNKNOWN_UINT_SPACING uintBlock(post_mlb_size);
+} CLUSTER_BINARY_BLOCK;
+
+typedef struct (CLUSTER_HEADER &cluster_header) {
+    CLUSTER_ASCII_BLOCK cab(
+        cluster_header.sectionsSize,
+        cluster_header.block1_size,
+        cluster_header.block2_size,
+        cluster_header.block3_size,
+        cluster_header.block4_size,
+        cluster_header.listing_size
+    ) <optimize=false>;
+
+    CLUSTER_BINARY_BLOCK cbb(
+        cluster_header.mlb_headers_size,
+        cluster_header.mlb_exploded_size,
+        cluster_header.post_mlb_size
+    ) <optimize=false>;
+} CLUSTER_BLOCK;
+
+local uint i=0;
+for (i=0; i<section_block_index; i++) {
+    CLUSTER_BLOCK cluster_blocks(clusters[i]);
+};
+
+typedef struct {
+    TEXT_BLOCK name(0x20);
+    UINT u_size1;
+    USHORT u_size2 <bgcolor=0x8EE8E0>;
+    USHORT u_size3 <bgcolor=0xEE88E0>;
+    FAST_USHORT_BLOCK uints[4];
+    // BYTE b1[0x14]  <bgcolor=cBlack>;
+
+    UINT clusterSize;
+    local uint uShortBlocksCount = 6; 
+    FAST_USHORT_BLOCK uBlock[uShortBlocksCount] <optimize=false>;
+} REGION_HEADER;
+
+REGION_HEADER regions[region_count];
+
+typedef struct (REGION_HEADER &rh) { 
+    FAST_USHORT_BLOCK wtf_block2[rh.u_size2] <fgcolor=0x8EE8E0>;
+    FAST_USHORT_BLOCK wtf_block3[rh.u_size3] <fgcolor=0xEE88E0>;
+
+    TEXT_BLOCK name(0x20)[rh.clusterSize] <optimize=false>;
+    UNKNOWN_UINT_SPACING uIntBlock(rh.clusterSize) <optimize=false>;
+} REGION_CONTENTS;
+
+for (i=0; i<region_count; i++) {
+    REGION_CONTENTS region_contents(regions[i]) <optimize=false>;
+};

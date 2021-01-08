@@ -26,3 +26,10 @@ Sound/Levels/XboxADPCM.exe
 Sound/Global/Examples/
 Sound/Global/Extracted*/
 Sound/Global/Extract*/
+
+# Historical Game Files
+Historical/Templates */*/*.3d2_63
+Historical/Templates */*/*.mlb_EDW63
+Historical/Templates */*/*.mop_63
+Historical/Templates */*/*.rmp_5
+Historical/Templates */*/*.hdr_5

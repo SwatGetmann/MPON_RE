@@ -1,0 +1,75 @@
+//------------------------------------------------
+//--- 010 Editor v11.0.1 Binary Template
+//
+//      File: Template for /common/Sound/IMS_B*.IMS files
+//   Authors: SwatGetmann
+//   Version: v 0.0.1
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+UINT total_file_size <bgcolor=0x008800>;
+UINT total_music_records <bgcolor=0x00D8A0>;
+
+UINT someUInt01 <bgcolor=cGray>;
+
+BYTE delim1[8] <bgcolor=cBlack>;
+
+struct RECORD_MICRON () {
+    UINT    someUIntA1 <fgcolor=0x00C0C0>;
+    UINT    audioBlocksSize <bgcolor=0x00a0a0>;;
+};
+
+struct RECORD {
+    CHAR name[] <bgcolor=0x0000E0>;
+    BYTE filler[0x20 - Strlen(name) -1]  <bgcolor=cBlack>;
+    UINT someUIntA <bgcolor=0x000088>; // ??
+    UINT volume <bgcolor=0x008066>; // ???
+    UINT someUIntB <bgcolor=0x800066>; // ???
+    UINT audioBlocksSize  <bgcolor=0x808000>;
+    RECORD_MICRON microns[4];
+};
+
+RECORD records[total_music_records] <optimize=false>;
+
+struct FDELIM (uint size) { BYTE delim[size] <bgcolor=cBlack>; };
+
+struct AUDIO_BLOCK_CHUNK {
+    FDELIM fd(0x10);
+    RECORD_MICRON record;
+};
+
+struct CONDITIONAL_REGION
+{
+    UINT someUIntA <fgcolor=0xB08090>;
+    UINT someUIntB <fgcolor=0xD0A090>;
+    UINT someUIntC <fgcolor=0x90D090>;
+    UINT someUIntD <fgcolor=0x90E0E0>;
+};
+
+local string brokenName1 = "fight4_ND";
+local string brokenName2 = "intensefight2_D";
+
+struct AUDIO_META_DATA(RECORD &record) {
+    AUDIO_BLOCK_CHUNK abc[record.audioBlocksSize];
+    local uint weirdMul = record.someUIntA == 0 ? 2 : 1;
+    if (record.microns[0].audioBlocksSize > 0 
+        || Strcmp(record.name, brokenName1) == 0
+        || Strcmp(record.name, brokenName2) == 0
+    ) 
+    {
+        CONDITIONAL_REGION abc_cr[record.audioBlocksSize * weirdMul];
+    };
+    FDELIM abc_leftout0(record.microns[0].audioBlocksSize * 8);
+    FDELIM abc_leftout1(record.microns[1].audioBlocksSize * 8);
+    FDELIM abc_leftout2(record.microns[2].audioBlocksSize * 8);
+    FDELIM abc_leftout3(record.microns[3].audioBlocksSize * 8);
+};
+
+local uint i=0;
+for (i=0; i<total_music_records; i++) {
+    AUDIO_META_DATA amd(records[i]);
+};

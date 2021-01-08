@@ -1,0 +1,27 @@
+//------------------------------------------------
+//--- 010 Editor v11.0.1 Binary Template
+//
+//      File: NGGLOBAL_400.WAD
+//   Authors: SwatGetmann
+//   Version: v0.0.1
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+typedef struct {
+    USHORT shorts[16];
+} UNKNOWN_SUBOBJECT;
+
+typedef struct {
+    SHORT index <bgcolor=cRed>;
+    SHORT unknown_val1 <bgcolor=0x6A>; // MOMO_FLAG?
+    CHAR name[] <bgcolor=0xfA>;
+    BYTE byte_hash[0x20 - Strlen(name) -1] <bgcolor=0x8F>;
+    INT unknown <bgcolor=0xF0>;
+    FLOAT floats[6];
+} OBJECT;
+
+OBJECT obj1[89] <optimize=false>;

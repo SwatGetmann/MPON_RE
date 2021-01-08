@@ -1,0 +1,23 @@
+//------------------------------------------------
+//--- 010 Editor v11.0.1 Binary Template
+//
+//      File: 
+//   Authors: SwatGetmann
+//   Version: v0.0.1
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+typedef struct {
+    UINT size <bgcolor=cRed>;
+    USHORT channels;
+    USHORT samplerate <bgcolor=cPurple>;
+    SHORT data[size/2];
+} AUDIO_DATA <bgcolor=0x5F>;
+
+local int b13_total = 220;
+
+AUDIO_DATA audio[b13_total] <optimize=false>;

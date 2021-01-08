@@ -1,0 +1,30 @@
+//------------------------------------------------
+//--- 010 Editor v11.0.1 Binary Template
+//
+//      File: NQGLOBAL_400.WAD
+//   Authors: 
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+struct RECORD {
+    USHORT current_index <bgcolor=0xAA5500>;
+    USHORT flag1 <fgcolor=0xAAA0A0>;
+    
+    CHAR name[] <bgcolor=0x10B8B8>;
+    BYTE filler1[0x20 - Strlen(name)-1] <bgcolor=cBlack>;
+    
+    USHORT loopPoints[2] <fgcolor=0x8888F0>; // presumably | or points of cut ...
+
+
+    UINT size_of_blocks <bgcolor=0x00AA55>;
+    USHORT block_indexes[size_of_blocks] <fgcolor=0x00AA55>;
+    BYTE filler2[84-size_of_blocks*2] <bgcolor=cBlack>;
+};
+
+local int total_count = 1363; // from idx file
+RECORD records[total_count] <optimize=false>;

@@ -1,0 +1,18 @@
+//------------------------------------------------
+//--- 010 Editor v11.0.1 Binary Template
+//
+//      File: NP3_PSTL.WAD files
+//   Authors: SwatGetmann
+//   Version: v0.0.1
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+UINT size <bgcolor=cRed>;
+struct RECORD {
+    USHORT wad_start_offset;
+};
+RECORD all[size] <bgcolor=0xaa0000>;

@@ -1,0 +1,19 @@
+//------------------------------------------------
+//--- 010 Editor v11.0.1 Binary Template
+//
+//      File: NP3_PSTL_Start_Menu.WAD
+//   Authors: SwatGetmann
+//   Version: v0.0.1
+//   Purpose: Extract Indexes of Audio Files
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+typedef struct {
+    INT size <bgcolor=0xAA>;
+    SHORT indexes[size];
+} LISTING <bgcolor=cRed>;
+
+LISTING l;

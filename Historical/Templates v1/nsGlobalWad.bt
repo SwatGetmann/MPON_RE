@@ -1,0 +1,41 @@
+//------------------------------------------------
+//--- 010 Editor v11.0.1 Binary Template
+//
+//      File: NSGLOBAL.WAD / NPGLOBAL_400.WAD
+//   Authors: SwatGetmann
+//   Version: v0.0.3
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+typedef struct {
+    USHORT shorts[16];
+} UNKNOWN_SUBOBJECT;
+
+typedef struct {
+    SHORT index <bgcolor=cRed>;
+    SHORT unknown_val1 <bgcolor=0x6A>; // MOMO_FLAG?
+    CHAR name[] <bgcolor=0xfA>;
+    BYTE byte_hash[0x20 - Strlen(name) -1] <bgcolor=0x8F>;
+    
+    UBYTE sub_size <bgcolor=cRed>;
+    UBYTE unk0;
+    USHORT unk1 <bgcolor=0x6A>;
+    BYTE b_unk1[24] <bgcolor=0x000000>;
+
+    UNKNOWN_SUBOBJECT subs[sub_size] <bgcolor=0xFF0000>;
+
+    local ubyte zero_offset_size = 0x20;
+    if (sub_size % 2 == 0) {
+        zero_offset_size = 0x0;
+    } else {
+        zero_offset_size = 0x20;
+    };
+
+    BYTE zero_offset[zero_offset_size] <bgcolor=0x000000>;
+} OBJECT;
+
+OBJECT obj1[16381] <optimize=false>;

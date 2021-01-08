@@ -1,0 +1,18 @@
+//------------------------------------------------
+//--- 010 Editor v11.0.1 Binary Template
+//
+//      File: NSF_EN_158.WAD
+//   Authors: SwatGetmann
+//   Version: v0.0.1
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+typedef struct { DWORD FULL_BYTES; } DELIMITER <bgcolor=cBlack>;
+DELIMITER d1;
+
+typedef struct { UINT ADDRES_HOP; } ADDRESS_SECTOR <bgcolor=cRed>;
+ADDRESS_SECTOR ad;

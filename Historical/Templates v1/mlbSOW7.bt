@@ -1,0 +1,86 @@
+//------------------------------------------------
+//--- 010 Editor v11.0.1 Binary Template
+//
+//      File: Main_Menu_TEX.mlb_SOW7
+//   Authors: Swat Getmann
+//   Version: v0.0.1
+//   Purpose: Extract data from The Matrix Path Of Neo PC game
+//  Category: Game extractor
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+typedef struct {
+    char name[5];
+    char type[3];
+    char detail[32];
+} HEADER1 <bgcolor=0x8dab7b>;
+
+HEADER1 h1;
+
+typedef struct {
+    INT values_array1[7];
+} UNKNOWN1 <bgcolor=0xAB9A9A>;
+
+UNKNOWN1 unk1;
+
+typedef struct {
+    CHAR name[16];
+} AUTHOR <bgcolor=0x72AB76>;
+
+AUTHOR author;
+
+typedef struct {
+    INT values_array[4];
+} UNKNOWN_NUMERIC2 <bgcolor=0xABAB73>;
+
+UNKNOWN_NUMERIC2 unk2;
+
+typedef struct {
+    CHAR name[32] <bgcolor=0xaa>;
+    INT val1;
+    INT val2;
+    INT val3;
+    INT val4;
+    INT val5;
+    INT val6;
+    INT val7;
+    BYTE delim[16] <bgcolor=0xffAAff>;
+    INT val8;
+    INT val9;
+    INT val10;
+    INT val11;
+    INT val12;
+    INT val13;
+    INT val14;
+    INT val15;
+    SHORT val16[4] <bgcolor=0xfeAfe5>;
+    INT val17 <bgcolor=0x55007F>;
+} UNKNOWN3 <bgcolor=0xEFAA5A>;
+
+UNKNOWN3 object;
+
+typedef struct {
+    CHAR name[32] <bgcolor=0xaa>;
+    INT val1;
+    INT val2;
+    INT val3;
+    DWORD width  <bgcolor=0xfe00e5>;
+    DWORD height <bgcolor=0xfe00aa>;
+    CHAR type[4] <bgcolor=0xfeAfe5>;
+    INT size <bgcolor=0xffFe00>;
+    INT val4;
+    INT val5 <bgcolor=0xFa>; // possible float
+    INT val6;
+    INT val7 <bgcolor=0xffFa00>; // non-empty, WTF
+    INT val8;
+    INT val9;
+    INT val10;
+    DWORD bytes[4] <bgcolor=0xABAB73>;
+    INT size_dup <bgcolor=0xffFe00>;
+    BYTE img_bytes[size] <bgcolor=0x00Fa00>;
+    INT final_val <bgcolor=0xABAB73>;
+} UNKNOWN4;
+
+UNKNOWN4 object_exploded;

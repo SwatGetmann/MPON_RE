@@ -1,0 +1,37 @@
+//------------------------------------------------
+//--- 010 Editor v11.0.1 Binary Template
+//
+//      File: Template for NQGLOBAL_400.WAD
+//   Authors: SwatGetmann
+//   Version: v0.1.0
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+// ReadFile @ matrix.bin + 0x100154
+
+typedef struct {
+    USHORT object_index <bgcolor=cYellow>;
+    WORD unk_marker ; 
+    CHAR name[] <bgcolor=cRed>;
+   
+    local int blank_length = 0x20 - Strlen(name) - 1;
+    BYTE unk_blank[blank_length] <bgcolor=cBlue>;
+
+    // possible looppoints ?    
+    USHORT a  <bgcolor=0xa0>;
+    USHORT b  <bgcolor=0x00a0>;
+
+    // UNKNOWN LIST OF UNSORTED VALUES
+    // - what do they refer to?
+    UINT size_shorts;
+    USHORT unk_values[size_shorts]  <bgcolor=cGreen>;
+    USHORT unknown2[42-size_shorts];
+} UNKOBJV01;
+
+local int size = 1363; // taken from first USHORT in NQGLOBAL_400.idx file
+UNKOBJV01 obj1[1363] <optimize=false>;
+

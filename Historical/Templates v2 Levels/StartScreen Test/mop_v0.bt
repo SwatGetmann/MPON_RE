@@ -1,0 +1,16 @@
+//------------------------------------------------
+//--- 010 Editor v11.0.1 Binary Template
+//
+//      File: MOP template
+//   Authors: SwatGetmann
+//   Version: v0.0.1
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+UINT size1 <bgcolor=0x0505F0>;
+UINT size2 <bgcolor=0x15A0A0>;
+BYTE undecoded[8] <bgcolor=cBlack>;

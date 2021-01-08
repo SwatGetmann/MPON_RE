@@ -1,0 +1,51 @@
+//------------------------------------------------
+//--- 010 Editor v11.0.1 Binary Template
+//
+//      File: NQGLOBAL_400.WAD
+//   Authors: 
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+struct RECORD_BLOCK {
+    UINT index <bgcolor=0x00AA55>;
+    USHORT unk1[6] <fgcolor=0x00AA55>;
+    USHORT filler1[3] <bgcolor=cBlack>;
+    UINT unk2 <bgcolor=0x008F00>;
+    USHORT unk3[3] <fgcolor=0x00e8e8>;
+};
+
+struct RECORD {
+    USHORT current_index <bgcolor=0xAA5500>;
+    USHORT flag1 <fgcolor=0xAAA0A0>;
+    
+    CHAR name[] <bgcolor=0x10B8B8>;
+    BYTE filler1[0x20 - Strlen(name)-1] <bgcolor=cBlack>;
+    
+    UBYTE size_of_blocks <bgcolor=0x00AA55>;
+    UBYTE unk1 <fgcolor=0x8888F0>;
+    UBYTE unk2 <fgcolor=0xBAF8F0>;
+    BYTE filler2[25] <bgcolor=cBlack>;
+
+    RECORD_BLOCK blocks[size_of_blocks];
+    
+    if (size_of_blocks % 2 == 1) {
+        BYTE filler3[0x20] <bgcolor=cBlack>;    
+    };
+    
+
+    // UINT unk1 <fgcolor=0x8888F0>; // presumably | or points of cut ...
+
+    // FLOAT floats[6] <fgcolor=0x00AA55>;
+
+   
+   // USHORT block_indexes[size_of_blocks] ;
+   // BYTE filler2[84-size_of_blocks*2] <bgcolor=cBlack>;
+};
+
+local int total_count = 16384; // from idx file
+RECORD records[total_count] <optimize=false>;

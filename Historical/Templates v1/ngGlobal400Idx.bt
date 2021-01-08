@@ -1,0 +1,18 @@
+//------------------------------------------------
+//--- 010 Editor v11.0.1 Binary Template
+//
+//      File: NGLOBAL_400.IDX
+//   Authors: SwatGetmann
+//   Version: v0.1.0
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+UINT size <bgcolor=cRed>;
+struct RECORD {
+    UINT wad_start_offset;
+};
+RECORD all[size] <bgcolor=0xaa0000>;

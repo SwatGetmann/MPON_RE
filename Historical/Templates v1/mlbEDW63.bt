@@ -1,0 +1,102 @@
+//------------------------------------------------
+//--- 010 Editor v11.0.1 Binary Template
+//
+//      File: Matrix Path Of Neo - Material Library Template
+//   Authors: Swat Getmann
+//   Version: v0.0.2
+//   Purpose: Extract data from The Matrix Path Of Neo PC game
+//  Category: Game extractor
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+typedef struct {
+    char name[5];
+    char type[3];
+    char detail[32];
+} LIBHEADER <bgcolor=0x8dab7b>;
+
+ LIBHEADER lh;
+
+typedef struct {
+    INT values_array1[7];
+} UNKNOWN1 <bgcolor=0xAB9A9A>;
+
+UNKNOWN1 unk1;
+
+typedef struct {
+    CHAR name[16];
+} AUTHOR <bgcolor=0x72AB76>;
+
+AUTHOR author;
+
+typedef struct {
+    INT static_value1;
+    INT static_value2;
+    INT listing_size <bgcolor=0xFFAB73>;
+    INT objects_count <bgcolor=0xFFAB99>;
+} LISTING_PREFACE <bgcolor=0xABAB73>;
+
+LISTING_PREFACE lp1;
+
+typedef struct {
+    CHAR name[32] <bgcolor=0xaa>;
+    
+    struct sub1 {
+        INT st_val1;
+        INT dn_val1;
+        INT index;
+        INT connector; // connector w/ *.hdr_5, *.3d2_63
+    };
+    
+    sub1 unk_sub <bgcolor=0xBE1D93>;
+    
+    
+    struct sub2 {
+        INT dn_val3;
+        INT dn_val4;
+        INT dn_val5;
+    };
+
+    sub2 dn_sub <bgcolor=0x661D90>;
+    
+    BYTE delim[16] <bgcolor=0xffAAff>; // array of 8 half-floats
+    
+    FLOAT possible_ratio;
+    INT unknown_values1[2] <bgcolor=0xffA2A2>;
+    FLOAT unknown_floats[3] <bgcolor=0xfff255>;
+    INT unknown_values2[2] <bgcolor=0xffA2A2>;
+    SHORT val16[4] <bgcolor=0xfeAfe5>;
+} LISITNG_OBJECT_HEADER; // <bgcolor=0xEFAA5A>;
+
+LISITNG_OBJECT_HEADER loh1[lp1.listing_size];
+
+typedef struct {
+    INT flag;
+} LISITNG_DELIMITER <bgcolor=cRed>;
+
+typedef struct {
+    LISITNG_DELIMITER ld;
+    CHAR name[32] <bgcolor=0xaa>;
+    INT val1;
+    INT index <bgcolor=0x00Fa41>;
+    INT connector <bgcolor=0xFa>; // connector w/ *.hdr_5
+    DWORD width  <bgcolor=0xfe00e5>;
+    DWORD height <bgcolor=0xfe00aa>;
+    CHAR type[4] <bgcolor=0xfeAfe5>;
+    INT size <bgcolor=0xffFe00>;
+    INT val4;
+    FLOAT possible_ratio <bgcolor=0xFa>; // possible float
+    INT val6;
+    INT val7 <bgcolor=0xffFa00>; // non-empty, WTF
+    INT val8;
+    INT val9;
+    INT val10;
+    FLOAT floats[4] <bgcolor=0xABAB73>;
+    INT size_dup <bgcolor=0xffFe00>;
+    BYTE img_bytes[size] <bgcolor=0x00Fa00>;
+    INT final_val <bgcolor=0xABAB73>;
+} LISTING_EXPLODED_OBJECT;
+
+LISTING_EXPLODED_OBJECT object_exploded[lp1.objects_count] <optimize=false>;
